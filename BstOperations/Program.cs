@@ -1,4 +1,17 @@
-﻿class BST
+﻿var bst = new BST();
+
+bst.Insert(50);
+bst.Insert(30);
+bst.Insert(70);
+bst.Insert(65);
+
+bst.InOrderTraversal();
+Console.WriteLine();
+bst.PreOrderTraversal();
+Console.WriteLine();
+bst.PostOrderTraversal();
+
+class BST
 {
     private BstNode? _root;
 
@@ -115,6 +128,90 @@
         else
         {
             parent.Right = child;
+        }
+    }
+
+    // (left -> root -> right)
+    public void InOrderTraversal()
+    {
+        if (_root is null)
+            return;
+
+        var current = _root;
+
+        var stack = new Stack<BstNode>();
+
+        while (current is not null || stack.Count > 0)
+        {
+            while (current is not null)
+            {
+                stack.Push(current);
+                current = current.Left;
+            }
+
+            current = stack.Pop();
+            Console.Write($"{current.Value} -> ");
+            current = current.Right;
+        }
+    }
+
+    // (root -> left -> right)
+    public void PreOrderTraversal()
+    {
+        if (_root is null)
+            return;
+
+        var stack = new Stack<BstNode>();
+        var current = _root;
+        stack.Push(current);
+
+        while (stack.Count > 0)
+        {
+            current = stack.Pop();
+            Console.Write($"{current.Value} -> ");
+
+            if (current.Right is not null)
+            {
+                stack.Push(current.Right);
+            }
+
+            if (current.Left is not null)
+            {
+                stack.Push(current.Left);
+            }
+        }
+    }
+
+    //(Left -> right -> root)
+    public void PostOrderTraversal()
+    {
+        if (_root is null)
+            return;
+
+        var stack1 = new Stack<BstNode>();
+        var stack2 = new Stack<BstNode>();
+
+        stack1.Push(_root);
+
+        while (stack1.Count > 0)
+        {
+            var current = stack1.Pop();
+            stack2.Push(current);
+
+            if (current.Left is not null)
+            {
+                stack1.Push(current.Left);
+            }
+
+            if (current.Right is not null)
+            {
+                stack1.Push(current.Right);
+            }
+        }
+
+        while (stack2.Count > 0)
+        {
+            Console.Write($"{stack2.Pop().Value} -> ");
         }
     }
 }
