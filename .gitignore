@@ -2,6 +2,7 @@
 bin/
 obj/
 
-
+dotnet-tools.json
 
 .vscode/
+.vs/
