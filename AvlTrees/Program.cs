@@ -31,6 +31,63 @@ class AVLTree
         return Balance(node);
     }
 
+    public void Delete(int value)
+    {
+        _root = Delete(_root, value);
+    }
+
+    private TreeNode? Delete(TreeNode? node, int value)
+    {
+        // Value does not exist
+        if (node is null)
+            return null;
+
+        // Search left
+        if (value < node.Value)
+        {
+            node.Left = Delete(node.Left, value);
+        }
+        // Search right
+        else if (value > node.Value)
+        {
+            node.Right = Delete(node.Right, value);
+        }
+        // Found the node
+        else
+        {
+            // Case 1 + Case 2:
+            // No left child
+            if (node.Left is null)
+                return node.Right;
+
+            // No right child
+            if (node.Right is null)
+                return node.Left;
+
+            // Case 3:
+            // Node has TWO children
+            var successor = FindMin(node.Right);
+
+            // Copy successor's value into current node
+            node.Value = successor.Value;
+
+            // Delete the original successor
+            node.Right = Delete(node.Right, successor.Value);
+        }
+
+        return Balance(node);
+    }
+
+    private TreeNode FindMin(TreeNode node)
+    {
+        while (node.Left is not null)
+        {
+            node = node.Left;
+        }
+
+        return node;
+    }
+
     // Search
     public bool Contains(int value)
     {
