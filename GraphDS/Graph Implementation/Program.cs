@@ -58,3 +58,30 @@ void AddEdge(Dictionary<string, HashSet<string>> graph, string from, string to)
     graph[from].Add(to);
     graph[to].Add(from);
 }
+
+void RemoveEdge(Dictionary<string, HashSet<string>> graph, string from, string to)
+{
+    if (graph[from].Contains(to))
+        graph[from].Remove(to);
+
+    if (graph[to].Contains(from))
+        graph[to].Remove(from);
+}
+
+void RemoveNode(Dictionary<string, HashSet<string>> graph, string node)
+{
+    if (!graph.ContainsKey(node))
+        return;
+
+    foreach (var neighbour in graph[node])
+    {
+        graph[neighbour].Remove(node);
+    }
+
+    graph.Remove(node);
+}
+
+bool HasEdge(Dictionary<string, HashSet<string>> graph, string from, string to)
+{
+    return graph.ContainsKey(from) && graph[from].Contains(to);
+}
